@@ -84,6 +84,15 @@ dg1022 batch commands.scpi
 Use `--device /dev/usbtmcN` or `--serial SERIAL` when explicit selection is
 needed. Unit suffixes accepted by the instrument can be used in high-level values.
 
+The kernel-assigned `/dev/usbtmcN` number is not permanent. It can change after
+reconnection or reboot, and also depends on which other USBTMC instruments are
+attached. For example, the same tested DG1022 has appeared as `/dev/usbtmc3` in
+an earlier validation session and as `/dev/usbtmc2` later; this does not mean the
+instrument went offline. Do not hard-code a previously observed node in scripts.
+Use `dg1022 list`, automatic selection, or the stable `--serial DG1D124605159`
+selector. Confirm actual communication with `dg1022 info`; `lsusb` or the mere
+presence of a device node only confirms USB enumeration.
+
 Do not identify this generator from the USB product label alone. The tested
 DG1022 (`DG1D124605159`, USB `1ab1:0588`) has reported `DG3000 SERIES` through
 its USB descriptor, while some `lsusb` ID databases label the same VID:PID as
@@ -102,6 +111,9 @@ sample-aligned between channels and must not be used for cross-channel phase wor
 
 ## DG1022 Compatibility Notes
 
+- `/dev/usbtmcN` is dynamically assigned and may change between sessions. Locate
+  the current node with `dg1022 list`, then verify communication with
+  `dg1022 info`; prefer `--serial` when a stable explicit selector is needed.
 - USB product strings and host-side `lsusb` names may incorrectly say
   `DG3000 SERIES` or `DS1000 SERIES`; the `*IDN?` model and `DG...` serial are
   authoritative.
@@ -122,6 +134,14 @@ sample-aligned between channels and must not be used for cross-channel phase wor
   this unit-specific amplitude behavior.
 
 ## Verification
+
+The Git-tracked Codex skill is in `skills/dg1022-cli`. From the repository root,
+install its discovery link with:
+
+```bash
+mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
+ln -sfn "$(pwd)/skills/dg1022-cli" "${CODEX_HOME:-$HOME/.codex}/skills/dg1022-cli"
+```
 
 ```bash
 python -m pytest

@@ -1,0 +1,4 @@
+interface:
+  display_name: "DG1022 CLI"
+  short_description: "Operate and validate the RIGOL DG1022 through its CLI"
+  default_prompt: "Use $dg1022-cli to configure or validate the connected DG1022 safely through dg1022."

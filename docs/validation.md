@@ -9,6 +9,12 @@ RIGOL TECHNOLOGIES,DG1022,DG1D124605159,00.02.00.06.00.02.07
 /dev/usbtmc3
 ```
 
+The device node above records that validation session only. Linux assigns the
+`/dev/usbtmcN` suffix dynamically; the same generator was subsequently enumerated
+as `/dev/usbtmc2`. A changed suffix is not evidence that the DG1022 is offline.
+Use `dg1022 list` to locate it and `dg1022 info` to verify a successful `*IDN?`
+exchange, or select it by serial number instead of hard-coding the node.
+
 The physical connection was DG CH1 to DS1152E CH1 and DG CH2 to DS1152E CH2.
 
 ## Catalog And Transport
